@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Exec Project</string>
+    <string name="profile">Perfil</string>
+    <string name="configuration">Configuração</string>
+    <string name="about">Sobre o App</string>
+    <string name="exec_monitoring">Monitoramento Exercicio</string>
+    <string name="hist">Historico</string>
+</resources>
