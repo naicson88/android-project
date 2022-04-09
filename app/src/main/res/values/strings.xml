@@ -15,5 +15,15 @@
     <string name="about">About</string>
     <string name="hist">User History</string>
     <string name="exec_monitoring">Exercise Monitoring</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="profile_title">Profile</string>
+    <string name="user_name">Name</string>
+    <string name="weight">Weight</string>
+    <string name="height">Height</string>
+    <string name="submit">Submit</string>
+    <string name="birthday">Birthday</string>
+    <string name="selectDate">Birthday</string>
 
 </resources>
