@@ -25,5 +25,18 @@
     <string name="submit">Submit</string>
     <string name="birthday">Birthday</string>
     <string name="selectDate">Birthday</string>
+    <string name="config_title">Configuration</string>
+    <string name="exec_type">Exercise Type</string>
+    <string name="walk">Walk</string>
+    <string name="walking">Walking</string>
+    <string name="running">Runnng</string>
+    <string name="biking">Biking</string>
+    <string name="kmh">Km/h</string>
+    <string name="speed_unit">Speed Unit</string>
+
+    <string-array name="config_spinner">
+        <item>Km/h</item>
+        <item>M/s</item>
+    </string-array>
 
 </resources>

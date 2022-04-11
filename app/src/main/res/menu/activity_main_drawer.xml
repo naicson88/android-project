@@ -11,7 +11,7 @@
 
             />
         <item
-            android:id="@+id/menu_config"
+            android:id="@+id/nav_config"
             android:icon="@drawable/ic_menu_config"
             android:title="@string/configuration" />
         <item
