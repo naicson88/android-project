@@ -28,7 +28,6 @@ import java.util.Map;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private FragmentProfileBinding binding;
-    private AppBarConfiguration mAppBarConfiguration;
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
 

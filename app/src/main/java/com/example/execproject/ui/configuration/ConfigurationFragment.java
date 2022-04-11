@@ -2,6 +2,7 @@ package com.example.execproject.ui.configuration;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,12 @@ import com.example.execproject.R;
 import com.example.execproject.databinding.FragmentConfigurationBinding;
 import com.example.execproject.databinding.FragmentHomeBinding;
 import com.example.execproject.ui.home.HomeViewModel;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class ConfigurationFragment extends Fragment {
 
@@ -37,13 +44,50 @@ public class ConfigurationFragment extends Fragment {
         binding = FragmentConfigurationBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //Configuration
+        initSpinner();
+
+        initMap();
+
+        return root;
+    }
+
+    private void initMap(){
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
+
+        //Async map
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+                    @Override
+                    public void onMapClick(LatLng latLgn){
+
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        //Set position
+                        markerOptions.position(latLgn);
+                        //Market title
+                        markerOptions.title(latLgn.latitude + " : " + latLgn.longitude);
+                        //Remove all markers
+                        googleMap.clear();
+                        //Anmiating zoom
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                latLgn, 10
+                        ));
+                        //Add Marker on Map
+                        googleMap.addMarker(markerOptions);
+                    }
+                });
+            }
+        });
+    }
+
+    private void initSpinner() {
+        //ConfigurationSpinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.config_spinner, android.R.layout.simple_spinner_item);
         Spinner spinner = binding.spinnerConfig;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter((adapter));
-
-        return root;
     }
 
     @Override
