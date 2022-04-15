@@ -25,14 +25,14 @@
         android:text="@string/gender"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/radioGroup"
+        app:layout_constraintEnd_toStartOf="@+id/radioGroupProfile"
         app:layout_constraintHorizontal_bias="0.72"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.325" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/radioGroupProfile"
         android:layout_width="205dp"
         android:layout_height="32dp"
         android:orientation="horizontal"
@@ -41,22 +41,25 @@
         app:layout_constraintHorizontal_bias="0.669"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.324">
+        app:layout_constraintVertical_bias="0.324"
+        android:onClick="onRadioButtonClicked"
+        >
 
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/radioButtonMale"
             android:layout_width="102dp"
             android:layout_height="33dp"
-            android:onClick="radioButtonhandler"
-            android:text="@string/male" />
+            android:text="@string/male"
+            />
 
         <RadioButton
-            android:id="@+id/female"
+            android:id="@+id/radioButtonFemale"
             android:layout_width="103dp"
             android:layout_height="33dp"
-            android:onClick="radioButtonhandler"
-            android:text="@string/female" />
+            android:text="@string/female"
+            />
+
     </RadioGroup>
 
     <TextView

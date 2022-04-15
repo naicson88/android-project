@@ -15,7 +15,7 @@
             android:icon="@drawable/ic_menu_config"
             android:title="@string/configuration" />
         <item
-            android:id="@+id/menu_about"
+            android:id="@+id/nav_about"
             android:icon="@drawable/ic_menu_about"
             android:title="@string/about" />
         <item
@@ -26,6 +26,5 @@
             android:id="@+id/menu_history"
             android:icon="@drawable/ic_menu_history"
             android:title="@string/hist" />
-
     </group>
 </menu>
