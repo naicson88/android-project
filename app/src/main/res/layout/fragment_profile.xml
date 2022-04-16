@@ -8,8 +8,8 @@
 
     <EditText
         android:id="@+id/names"
-        android:layout_width="285dp"
-        android:layout_height="43dp"
+        android:layout_width="310dp"
+        android:layout_height="42dp"
         android:layout_marginStart="36dp"
         android:ems="10"
         android:hint="@string/user_name"
@@ -106,19 +106,54 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.56" />
 
-    <EditText
-        android:id="@+id/current_weight"
+<!--    <EditText-->
+<!--        android:id="@+id/current_weight"-->
+<!--        android:layout_width="78dp"-->
+<!--        android:layout_height="41dp"-->
+<!--        android:ems="10"-->
+<!--        android:hint="@string/weight"-->
+<!--        android:maxLength="6"-->
+<!--        android:inputType="numberDecimal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.138"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.427" />-->
+
+    <com.santalu.maskara.widget.MaskEditText
+        android:id="@+id/inputHeight"
+        android:hint="@string/weight"
         android:layout_width="78dp"
         android:layout_height="41dp"
         android:ems="10"
-        android:hint="@string/weight"
-        android:inputType="numberDecimal"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.147"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.427" />
+        app:layout_constraintVertical_bias="0.424"
+        app:mask="___.__"
+        app:maskCharacter="_"
+        app:maskStyle="normal" />
+
+    <com.santalu.maskara.widget.MaskEditText
+        android:id="@+id/inputWeight"
+        android:layout_width="78dp"
+        android:layout_height="41dp"
+        android:ems="10"
+        android:hint="@string/height"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.651"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.427"
+        app:mask="_.__"
+        app:maskCharacter="_"
+        app:maskStyle="completable" />
 
     <TextView
         android:id="@+id/kg"
@@ -128,10 +163,25 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.354"
+        app:layout_constraintHorizontal_bias="0.335"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438" />
+        app:layout_constraintVertical_bias="0.435" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/height"-->
+<!--        android:layout_width="77dp"-->
+<!--        android:layout_height="42dp"-->
+<!--        android:ems="10"-->
+<!--        android:maxLength="4"-->
+<!--        android:hint="@string/height"-->
+<!--        android:inputType="numberDecimal"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.652"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.426" />-->
 
     <TextView
         android:id="@+id/metros"
@@ -141,24 +191,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.826"
+        app:layout_constraintHorizontal_bias="0.799"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.438" />
-
-    <EditText
-        android:id="@+id/height"
-        android:layout_width="77dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="@string/height"
-        android:inputType="numberDecimal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.682"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.426" />
 
     <Button
         android:id="@+id/button"
