@@ -47,5 +47,6 @@
     <string name="NullInfoProfile">Error registering information, try later</string>
     <string name="errorGender">Gender needs to be informed.</string>
     <string name="savedMessage">Saved</string>
+    <string name="errorUserNameChar">User name cannot have special characteres.</string>
 
 </resources>

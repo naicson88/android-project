@@ -36,8 +36,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
@@ -121,13 +125,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
            try{
 
-               Float heightFloat = Float.valueOf(userHeight);
-               Float weightFloat =  Float.valueOf(userWeight);
+               Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+               Matcher m = p.matcher(userName);
+               boolean isUserNameWithSpecialCharacteres = m.find();
 
-               if(userName == null || userName.isEmpty() || userName.length() < 2){
+              if(isUserNameWithSpecialCharacteres){
+                  Toast.makeText(getContext(), R.string.errorUserNameChar, Toast.LENGTH_SHORT).show();
+                  return false;
+              }
+
+               if(userName == null || userName.isEmpty() || userName.length() < 2 || userName.contains(";")) {
                    Toast.makeText(getContext(), R.string.errorUserName, Toast.LENGTH_SHORT).show();
                    return false;
                }
+
+               Float heightFloat = Float.valueOf(userHeight);
+               Float weightFloat =  Float.valueOf(userWeight);
+
                if(heightFloat < 0.60 || heightFloat > 3.0){
                    Toast.makeText(getContext(), R.string.errorUserHeight, Toast.LENGTH_SHORT).show();
                    return false;
@@ -153,11 +167,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void saveInformations(String userName, String userHeight, String userWeight, String userGender, String userBirthDate){
         try {
 
+            userName = userName+";";
+            userGender = userGender+";";
+            userWeight = userWeight+";";
+            userHeight = userHeight+";";
+            userBirthDate = userBirthDate+";";
+
             FileOutputStream fileOutputStream = getActivity().openFileOutput("Profile File.txt", Context.MODE_PRIVATE);
             fileOutputStream.write(userName.getBytes());
-            fileOutputStream.write(userHeight.getBytes());
-            fileOutputStream.write(userWeight.getBytes());
             fileOutputStream.write(userGender.getBytes());
+            fileOutputStream.write(userWeight.getBytes());
+            fileOutputStream.write(userHeight.getBytes());
             fileOutputStream.write(userBirthDate.getBytes());
 
             fileOutputStream.close();
@@ -180,10 +200,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
             StringBuffer stringBuffer = new StringBuffer();
 
+            List<String> dataStored = new ArrayList<>();
+
             String line;
             while((line = bufferedReader.readLine()) != null){
+                dataStored.add(line.toString());
                 stringBuffer.append(line + "\n");
             }
+
             Toast.makeText(getContext(), stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
 
