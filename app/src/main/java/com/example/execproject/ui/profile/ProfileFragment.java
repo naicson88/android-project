@@ -3,6 +3,7 @@ package com.example.execproject.ui.profile;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,6 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,15 +128,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
            try{
 
-               Pattern p = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-               Matcher m = p.matcher(userName);
-               boolean isUserNameWithSpecialCharacteres = m.find();
-
-              if(isUserNameWithSpecialCharacteres){
-                  Toast.makeText(getContext(), R.string.errorUserNameChar, Toast.LENGTH_SHORT).show();
-                  return false;
-              }
-
                if(userName == null || userName.isEmpty() || userName.length() < 2 || userName.contains(";")) {
                    Toast.makeText(getContext(), R.string.errorUserName, Toast.LENGTH_SHORT).show();
                    return false;
@@ -208,15 +202,44 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 stringBuffer.append(line + "\n");
             }
 
-            Toast.makeText(getContext(), stringBuffer.toString(), Toast.LENGTH_SHORT).show();
+            setFieldsInformationsSaved(dataStored.get(0));
+
+           // Toast.makeText(getContext(), stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
 
         }catch(FileNotFoundException e){
             e.printStackTrace();
         } catch(IOException e){
             e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
         }
     }
+
+
+   public void setFieldsInformationsSaved(String informations){
+        if(informations == null || informations.length() == 0 || informations.isEmpty())
+            return;
+
+        String[] profileInformations = informations.split(";");
+
+        for(int i = 0; i < profileInformations.length; i++){
+            Toast.makeText(getContext(), profileInformations[i], Toast.LENGTH_SHORT).show();
+        }
+
+        userNameInput.setText(profileInformations[0]);
+        userWeightInput.setText(profileInformations[2]);
+        userHeightInput.setText(profileInformations[3]);
+        dateButton.setText(profileInformations[4]);
+
+        if ("male".equalsIgnoreCase(profileInformations[1]))
+           radioButton = viewAux.findViewById(R.id.radioButtonMale);
+        else
+           radioButton = viewAux.findViewById(R.id.radioButtonFemale);
+
+          radioButton.setChecked(true);
+
+   }
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -241,7 +264,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private String getMonthFormat(int month){
         Map<Integer, String> calendarMap = new HashMap<Integer, String>(){{
             put(1, "JAN");put(2, "FEV");put(3, "MAR");put(4, "APR");put(5, "MAY");put(6, "JUN");
-            put(1, "JUL");put(2, "AUG");put(3, "SEP");put(4, "OCT");put(5, "NOV");put(6, "DEC");
+            put(7, "JUL");put(8, "AUG");put(9, "SEP");put(10, "OCT");put(11, "NOV");put(12, "DEC");
         }};
 
         String monthString = calendarMap.get(month) != null ? calendarMap.get(month) : "JAN";
@@ -268,7 +291,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
 
     public void onRadioButtonClicked (){
 
