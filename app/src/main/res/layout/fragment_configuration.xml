@@ -28,21 +28,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/exec_type"
-            android:textColor="#A9A9A9"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.055"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.144" />
+            app:layout_constraintVertical_bias="0.142" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/configSubmitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#1E90FF"
-            android:onClick="submitConfiguration"
+            android:onClick="submitbuttonHandler"
             android:text="@string/submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
 
 
         <RadioGroup
-            android:id="@+id/radioGroup"
+            android:id="@+id/radioGroupExercises"
             android:layout_width="353dp"
             android:layout_height="44dp"
             android:orientation="horizontal"
@@ -61,32 +61,31 @@
             app:layout_constraintHorizontal_bias="0.428"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.277">
+            app:layout_constraintVertical_bias="0.277"
+            android:onClick="onRadioButtonExercisesClicked">
 
             <RadioButton
-                android:id="@+id/walk"
+                android:id="@+id/walk_radio"
+                android:checked="true"
                 android:layout_width="117dp"
                 android:layout_height="match_parent"
-                android:onClick="radioButtonhandler"
                 android:text="@string/walking"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="194dp" />
 
             <RadioButton
-                android:id="@+id/run"
+                android:id="@+id/run_radio"
                 android:layout_width="117dp"
                 android:layout_height="44dp"
-                android:onClick="radioButtonhandler"
                 android:text="@string/running"
                 tools:layout_editor_absoluteX="149dp"
                 tools:layout_editor_absoluteY="195dp" />
 
             <RadioButton
-                android:id="@+id/biking"
-                android:layout_width="117dp"
+                android:id="@+id/biking_radio"
+                android:layout_width="120dp"
                 android:layout_height="match_parent"
-                android:onClick="radioButtonhandler"
                 android:text="@string/biking"
                 tools:layout_editor_absoluteX="277dp"
                 tools:layout_editor_absoluteY="194dp" />
@@ -101,10 +100,10 @@
             android:src="@drawable/ic_baseline_directions_bike_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.793"
+            app:layout_constraintHorizontal_bias="0.802"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.205" />
+            app:layout_constraintVertical_bias="0.204" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -116,7 +115,7 @@
             app:layout_constraintHorizontal_bias="0.465"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.205" />
+            app:layout_constraintVertical_bias="0.204" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -125,7 +124,7 @@
             android:src="@drawable/ic_walking"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.116"
+            app:layout_constraintHorizontal_bias="0.139"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.205" />
@@ -135,37 +134,108 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/speed_unit"
-            android:textColor="#A9A9A9"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.086"
+            app:layout_constraintHorizontal_bias="0.111"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.387" />
+            app:layout_constraintVertical_bias="0.414" />
+
+        <TextView
+            android:id="@+id/map_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/map_type"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.108"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.61" />
+
+        <TextView
+            android:id="@+id/map_orientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/map_orientation"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.519" />
 
         <Spinner
-            android:id="@+id/spinnerConfig"
+            android:id="@+id/speedUnitSpinner"
             android:layout_width="145dp"
             android:layout_height="33dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.391" />
+            app:layout_constraintVertical_bias="0.416" />
 
-        <fragment
-            android:id="@+id/mapView"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="351dp"
-            android:layout_height="190dp"
+        <Spinner
+            android:id="@+id/mapOrientationSpinner"
+            android:layout_width="154dp"
+            android:layout_height="34dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.735"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.525" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupMapType"
+            android:layout_width="274dp"
+            android:layout_height="62dp"
+            android:orientation="horizontal"
+            android:onClick="onRadioButtonMapTypeClicked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.672" />
+            app:layout_constraintVertical_bias="0.695">
+
+            <RadioButton
+                android:id="@+id/vetorialRadio"
+                android:checked="true"
+                android:layout_width="136dp"
+                android:layout_height="match_parent"
+                android:text="@string/vetorial"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <RadioButton
+                android:id="@+id/satelliteRadio"
+                android:layout_width="136dp"
+                android:layout_height="match_parent"
+                android:text="@string/satellite"
+                tools:ignore="TouchTargetSizeCheck" />
+        </RadioGroup>
+
+
+        />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
+
+<!--<fragment-->
+<!--android:id="@+id/mapView"-->
+<!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
+<!--android:layout_width="351dp"-->
+<!--android:layout_height="190dp"-->
+<!--app:layout_constraintBottom_toBottomOf="parent"-->
+<!--app:layout_constraintEnd_toEndOf="parent"-->
+<!--app:layout_constraintStart_toStartOf="parent"-->
+<!--app:layout_constraintTop_toTopOf="parent"-->
+<!--app:layout_constraintVertical_bias="0.672" />-->

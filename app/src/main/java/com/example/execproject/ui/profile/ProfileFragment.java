@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         int selectedId = radioGroup.getCheckedRadioButtonId();
         radioButton =  (RadioButton) view.findViewById(selectedId);
         dateButton =  (Button) view.findViewById(R.id.datePickerButton);
-        submitButton = (Button) viewAux.findViewById(R.id.submitButtonProfile);
+        submitButton = (Button) view.findViewById(R.id.submitButtonProfile);
 
         initSubmitButton();
 
