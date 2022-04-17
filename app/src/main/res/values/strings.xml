@@ -48,5 +48,8 @@
     <string name="errorGender">Gender needs to be informed.</string>
     <string name="savedMessage">Saved</string>
     <string name="errorUserNameChar">User name cannot have special characteres.</string>
+    <string name="exercise_mo">Exercise Monitoring App</string>
+    <string name="welcome">Welcome</string>
+    <string name="exec_importance">Exercise Importance</string>
 
 </resources>
