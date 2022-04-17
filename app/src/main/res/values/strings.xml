@@ -51,5 +51,10 @@
     <string name="exercise_mo">Exercise Monitoring App</string>
     <string name="welcome">Welcome</string>
     <string name="exec_importance">Exercise Importance</string>
+    <string name="exec_coverage">Exercises Monitoring with UpBody</string>
+    <string name="benefit_weight">Exercise can help prevent excess weight gain or help maintain weight loss.</string>
+    <string name="benefit_heart">Regular exercise helps prevent or manage many health problems and concerns.</string>
+    <string name="benefit_mood">Physical activity stimulates various brain chemicals that may leave you feeling happier, more relaxed and less anxious.</string>
+    <string name="benefit_sleep">Regular physical activity can help you fall asleep faster, get better sleep and deepen your sleep.</string>
 
 </resources>
