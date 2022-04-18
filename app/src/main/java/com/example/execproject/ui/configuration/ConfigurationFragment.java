@@ -235,9 +235,6 @@ public class ConfigurationFragment extends Fragment {
                 setFieldsInformationsSaved(line);
             }
 
-           // setFieldsInformationsSaved(dataStored.get(0));
-
-           //  Toast.makeText(getContext(), stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
         }catch(FileNotFoundException e){
             e.printStackTrace();

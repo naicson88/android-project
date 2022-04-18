@@ -150,6 +150,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                    return false;
                }
 
+               if(userBirthDate == null || userBirthDate.isEmpty()){
+                   Toast.makeText(getContext(), R.string.errorBirthDate, Toast.LENGTH_SHORT).show();
+                   return false;
+               }
+
            } catch(Exception e){
                e.printStackTrace();
                Toast.makeText(getContext(), R.string.errorProfileExceptionValidations, Toast.LENGTH_SHORT).show();
@@ -161,18 +166,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void saveInformations(String userName, String userHeight, String userWeight, String userGender, String userBirthDate){
         try {
 
-            userName = userName+";";
-            userGender = userGender+";";
-            userWeight = userWeight+";";
-            userHeight = userHeight+";";
-            userBirthDate = userBirthDate+";";
+            String attributesToBeSaved =  userName +";"+ userGender +";"+ userWeight + ";" + userHeight +";" + userBirthDate;
 
             FileOutputStream fileOutputStream = getActivity().openFileOutput("Profile File.txt", Context.MODE_PRIVATE);
-            fileOutputStream.write(userName.getBytes());
-            fileOutputStream.write(userGender.getBytes());
-            fileOutputStream.write(userWeight.getBytes());
-            fileOutputStream.write(userHeight.getBytes());
-            fileOutputStream.write(userBirthDate.getBytes());
+            fileOutputStream.write(attributesToBeSaved.getBytes());
 
             fileOutputStream.close();
 
@@ -194,15 +191,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
             StringBuffer stringBuffer = new StringBuffer();
 
-            List<String> dataStored = new ArrayList<>();
 
             String line;
             while((line = bufferedReader.readLine()) != null){
-                dataStored.add(line.toString());
-                stringBuffer.append(line + "\n");
-            }
 
-            setFieldsInformationsSaved(dataStored.get(0));
+                stringBuffer.append(line + "\n");
+
+                setFieldsInformationsSaved(line);
+            }
 
            // Toast.makeText(getContext(), stringBuffer.toString(), Toast.LENGTH_SHORT).show();
 
@@ -223,9 +219,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         String[] profileInformations = informations.split(";");
 
-        for(int i = 0; i < profileInformations.length; i++){
-            Toast.makeText(getContext(), profileInformations[i], Toast.LENGTH_SHORT).show();
-        }
+//        for(int i = 0; i < profileInformations.length; i++){
+//            Toast.makeText(getContext(), profileInformations[i], Toast.LENGTH_SHORT).show();
+//        }
 
         userNameInput.setText(profileInformations[0]);
         userWeightInput.setText(profileInformations[2]);
@@ -233,11 +229,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         dateButton.setText(profileInformations[4]);
 
         if ("male".equalsIgnoreCase(profileInformations[1]))
-           radioButton = viewAux.findViewById(R.id.radioButtonMale);
+           binding.radioButtonMale.setChecked(true); //viewAux.findViewById(R.id.radioButtonMale) ;
         else
-           radioButton = viewAux.findViewById(R.id.radioButtonFemale);
+           binding.radioButtonFemale.setChecked(true);// .findViewById(R.id.radioButtonFemale);
 
-          radioButton.setChecked(true);
+
 
    }
 
@@ -299,8 +295,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 radioButton = viewAux.findViewById(checkedId);
-                String resp = radioButton.getText().toString();
-                Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
+//                String resp = radioButton.getText().toString();
+//                Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
             }
         });
     }

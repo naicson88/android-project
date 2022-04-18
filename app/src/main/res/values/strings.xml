@@ -67,5 +67,6 @@
     <string name="vetorial">Vetorial</string>
     <string name="satellite">Satellite</string>
     <string name="map_type">Map Type</string>
+    <string name="errorBirthDate">Please insert your Birthdate</string>
 
 </resources>
