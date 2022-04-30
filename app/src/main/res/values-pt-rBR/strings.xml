@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Exec Project</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_slideshow">Mostrar Slides</string>
     <string name="profile">Perfil</string>
-    <string name="configuration">Configuração</string>
-    <string name="about">Sobre o App</string>
-    <string name="exec_monitoring">Monitoramento Exercicio</string>
-    <string name="hist">Historico</string>
+    <string name="configuration">Configurações</string>
+    <string name="about">Sobre</string>
+    <string name="hist">Histórico</string>
+    <string name="exec_monitoring">Monitoramento de Exercícios</string>
+    <string name="gender">Sexo</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="profile_title">Nome Completo</string>
+    <string name="user_name">Nome de usuário</string>
+    <string name="weight">Peso</string>
+    <string name="height">Altura</string>
+    <string name="submit">Enviar</string>
+    <string name="selectDate">Data de Nascimento</string>
+    <string name="config_title">Configurações</string>
+    <string name="exec_type">Tipo de Exercício</string>
+    <string name="walking">Caminhar</string>
+    <string name="running">Correr</string>
+    <string name="biking">Pedalar</string>
+    <string name="speed_unit">Unidade de Medida em Km</string>
+    <string name="menu_about">Sobre</string>
+    <string name="upbody_desc">UpbBody é um sistema de monitoramento de exercícios físicos que tem como objetivo auxiliar os seus usuários monitorando as suas ações em diversas modalidades de exercícios.</string>
+    <string name="devs">Desenvolvedores</string>
+    <string name="copyright">© Todos os direitos reservados - 2022</string>
+    <string name="errorUserName">O nome inserido é inválido.</string>
+    <string name="errorUserHeight">A altura inserida é inválida.</string>
+    <string name="errorProfileExceptionValidations">Desculpe-me, aconteceu algo de errado; tente novamente mais tarde.</string>
+
+
+    <!-- TODO: Remova ou modifique este espaço de texto -->
+    <string name="hello_blank_fragment">Olá, fragmento em branco</string>
+    <string name="errorUserWeight">O peso reportado é inválido.</string>
+    <string name="NullInfoProfile">Erro ao registrar a informação, tente novamente.</string>
+    <string name="errorGender">O Sexo precisa ser informado.</string>
+    <string name="savedMessage">Salvo!</string>
+    <string name="errorUserNameChar">Nome de usuário não pode conter caracteres especiais.</string>
+    <string name="exercise_mo">Aplicativo de Monitoramento de Exercícios.</string>
+    <string name="welcome">Bem-vindo!</string>
+    <string name="exec_importance">Importância do Exercício</string>
+    <string name="exec_coverage">Exercícios monitorados com UpBody</string>
+    <string name="benefit_weight">Exercícios físicos podem impedir o excesso de ganho de peso ou ajudar a manter o peso ideal.</string>
+    <string name="benefit_heart">Praticar exercícios físicos regularmente ajuda a prevenir ou administrar muitos problemas de saúde e problemas com peso.</string>
+    <string name="benefit_mood">Atividades físicas estimulam diversas químicas cerebrais que podem fazê-lo se sentir mais feliz, mais relaxado e menos ansioso.</string>
+    <string name="benefit_sleep">Praticar atividade física regularmente pode ajudá-lo a dormir mais rápido, melhor e mais profundamente.</string>
+    <string name="map_orientation">Mapa de Orientação</string>
+    <string name="vetorial">Vetorial</string>
+    <string name="satellite">Satélite</string>
+    <string name="map_type">Tipo de Mapa</string>
+    <string name="errorBirthDate">Por favor insira sua data de nascimento</string>
 </resources>
