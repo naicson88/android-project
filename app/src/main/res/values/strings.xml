@@ -68,5 +68,6 @@
     <string name="satellite">Satellite</string>
     <string name="map_type">Map Type</string>
     <string name="errorBirthDate">Please insert your Birthdate</string>
+    <string name="home">Home</string>
 
 </resources>
