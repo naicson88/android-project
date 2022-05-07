@@ -1,10 +1,9 @@
-package com.example.execproject.ui.gallery;
+package com.example.execproject.ui.about;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

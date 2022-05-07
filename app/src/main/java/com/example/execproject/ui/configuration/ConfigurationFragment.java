@@ -73,8 +73,6 @@ public class ConfigurationFragment extends Fragment {
 
         initSpinner();
         initSpinnerMapOrientation();
-        initMap();
-
 
         return root;
     }
@@ -92,37 +90,6 @@ public class ConfigurationFragment extends Fragment {
         initSubmitButton();
         readInformationsSaved();
 
-    }
-
-    private void initMap(){
-        //SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapView);
-
-        //Async map
-//        mapFragment.getMapAsync(new OnMapReadyCallback() {
-//            @Override
-//            public void onMapReady(@NonNull GoogleMap googleMap) {
-//
-//                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
-//                    @Override
-//                    public void onMapClick(LatLng latLgn){
-//
-//                        MarkerOptions markerOptions = new MarkerOptions();
-//                        //Set position
-//                        markerOptions.position(latLgn);
-//                        //Market title
-//                        markerOptions.title(latLgn.latitude + " : " + latLgn.longitude);
-//                        //Remove all markers
-//                        googleMap.clear();
-//                        //Anmiating zoom
-//                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-//                                latLgn, 10
-//                        ));
-//                        //Add Marker on Map
-//                        googleMap.addMarker(markerOptions);
-//                    }
-//                });
-//            }
-//        });
     }
 
     private void initSpinner() {
@@ -245,17 +212,14 @@ public class ConfigurationFragment extends Fragment {
         }
     }
 
-    public void setFieldsInformationsSaved(String informations){
-        if(informations == null || informations.length() == 0 || informations.isEmpty())
+    public void setFieldsInformationsSaved(String informations) {
+
+        if (informations == null || informations.length() == 0 || informations.isEmpty())
             return;
 
         String[] configInformations = informations.split(";");
 
-//        for(int i = 0; i < configInformations.length; i++){
-//            Toast.makeText(getContext(), configInformations[i], Toast.LENGTH_SHORT).show();
-//        }
-
-        radioButtonExercises =  (RadioButton) viewAux.findViewById(Integer.parseInt(configInformations[0]));
+        radioButtonExercises = (RadioButton) viewAux.findViewById(Integer.parseInt(configInformations[0]));
         radioButtonExercises.setChecked(true);
 
         binding.speedUnitSpinner.setSelection(Integer.parseInt(configInformations[1]));
@@ -265,6 +229,4 @@ public class ConfigurationFragment extends Fragment {
         radioButtonMapType.setChecked(true);
 
     }
-
-
 }
