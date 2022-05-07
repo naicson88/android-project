@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BodyUp</string>
+    <string name="app_name">UpBody</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
@@ -69,5 +69,6 @@
     <string name="map_type">Map Type</string>
     <string name="errorBirthDate">Please insert your Birthdate</string>
     <string name="home">Home</string>
+    <string name="twoDecimal">Invalid weight, only 2 decimals allowed</string>
 
 </resources>

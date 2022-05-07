@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.configuration.ConfigurationFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,6 +176,7 @@
             android:id="@+id/speedUnitSpinner"
             android:layout_width="145dp"
             android:layout_height="33dp"
+            android:background="#F8F8FF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.567"
@@ -186,6 +188,7 @@
             android:id="@+id/mapOrientationSpinner"
             android:layout_width="154dp"
             android:layout_height="34dp"
+            android:background="#F8F8FF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.735"

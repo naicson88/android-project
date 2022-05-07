@@ -38,6 +38,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -111,9 +112,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 userGender = radioButton.getText().toString();
                 userBirthDate = dateButton.getText().toString();
 
-                //Toast.makeText(getContext(), userName + " " + userHeight + " " + userWeight + " " + userGender +" " + userBirthDate, Toast.LENGTH_SHORT).show();
-
-               Boolean isFormValid =  isValidProfileInformations(userName,  userHeight,  userWeight,  userGender,  userBirthDate);
+                Boolean isFormValid =  isValidProfileInformations(userName,  userHeight,  userWeight,  userGender,  userBirthDate);
 
                if(!isFormValid)
                    return;
@@ -128,20 +127,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
            try{
 
-               if(userName == null || userName.isEmpty() || userName.length() < 2 || userName.contains(";")) {
+               if(userName == null || userName.isEmpty() || userName.length() < 2 ) {
                    Toast.makeText(getContext(), R.string.errorUserName, Toast.LENGTH_SHORT).show();
                    return false;
                }
 
-               Float heightFloat = Float.valueOf(userHeight);
-               Float weightFloat =  Float.valueOf(userWeight);
+               if(userWeight.substring(userWeight.indexOf(".")).length() > 3){
+                   Toast.makeText(getContext(), R.string.twoDecimal, Toast.LENGTH_SHORT).show();
+                   return false;
+               }
 
-               if(heightFloat < 0.60 || heightFloat > 3.0){
+               Float heightFloat = userHeight.isEmpty() ? 0 : Float.valueOf(userHeight);
+               Float weightFloat =  userWeight.isEmpty() ? 0 : Float.valueOf(userWeight);
+
+               if(heightFloat < 0.53 || heightFloat > 3.0) {
                    Toast.makeText(getContext(), R.string.errorUserHeight, Toast.LENGTH_SHORT).show();
                    return false;
                }
 
-               if(weightFloat < 20.0 || weightFloat > 500){
+               if(userWeight == "" || weightFloat < 20.0 || weightFloat > 500){
                    Toast.makeText(getContext(), R.string.errorUserWeight, Toast.LENGTH_SHORT).show();
                    return false;
                }
@@ -158,6 +162,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
            } catch(Exception e){
                e.printStackTrace();
                Toast.makeText(getContext(), R.string.errorProfileExceptionValidations, Toast.LENGTH_SHORT).show();
+               return false;
            }
 
            return true;
@@ -219,10 +224,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
         String[] profileInformations = informations.split(";");
 
-//        for(int i = 0; i < profileInformations.length; i++){
-//            Toast.makeText(getContext(), profileInformations[i], Toast.LENGTH_SHORT).show();
-//        }
-
         userNameInput.setText(profileInformations[0]);
         userWeightInput.setText(profileInformations[2]);
         userHeightInput.setText(profileInformations[3]);
@@ -232,9 +233,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
            binding.radioButtonMale.setChecked(true); //viewAux.findViewById(R.id.radioButtonMale) ;
         else
            binding.radioButtonFemale.setChecked(true);// .findViewById(R.id.radioButtonFemale);
-
-
-
    }
 
     private void initDatePicker() {
@@ -295,8 +293,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 radioButton = viewAux.findViewById(checkedId);
-//                String resp = radioButton.getText().toString();
-//                Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
+//
             }
         });
     }

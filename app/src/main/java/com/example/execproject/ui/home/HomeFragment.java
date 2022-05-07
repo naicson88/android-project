@@ -36,8 +36,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-       // homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+         return root;
     }
 
     @Override

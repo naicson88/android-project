@@ -51,8 +51,6 @@ public class ConfigurationFragment extends Fragment {
     private RadioButton radioButtonExercises, radioButtonMapType;
     private Spinner speedUnitSpinner, mapOrientationSpinner;
 
-    String  exerciseRadioText, speedUnitText, mapOrientationText, mapTypeText;
-
     int exerciseRadioId, mapTypeId;
     long speedUnitId,mapOrientationId;
 
@@ -83,9 +81,7 @@ public class ConfigurationFragment extends Fragment {
 
         submitButton = (Button) viewAux.findViewById(R.id.configSubmitButton);
 
-       // viewAux = getLayoutInflater().inflate(R.layout.fragment_configuration, null);
-
-        onRadioButtonExercisesClicked();
+       onRadioButtonExercisesClicked();
         onRadioButtonMapTypeClicked();
         initSubmitButton();
         readInformationsSaved();
@@ -93,7 +89,6 @@ public class ConfigurationFragment extends Fragment {
     }
 
     private void initSpinner() {
-        //ConfigurationSpinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.config_spinner, android.R.layout.simple_spinner_item);
         Spinner spinner = binding.speedUnitSpinner;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -121,8 +116,7 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 radioButtonExercises = viewAux.findViewById(checkedId);
-//                String resp = radioButtonExercises.getText().toString();
-//                Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
+//
             }
         });
     }
@@ -134,8 +128,7 @@ public class ConfigurationFragment extends Fragment {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
                 radioButtonMapType= viewAux.findViewById(checkedId);
-//                String resp = radioButtonMapType.getText().toString();
-//                Toast.makeText(getContext(), resp, Toast.LENGTH_SHORT).show();
+//
             }
         });
     }
@@ -160,9 +153,7 @@ public class ConfigurationFragment extends Fragment {
                 mapOrientationId = mapOrientationSpinner.getSelectedItemId();
                 mapTypeId = radioButtonMapType.getId();
 
-               // Toast.makeText(getContext(),exerciseRadioId + " _ " + speedUnitId + " _ " + mapOrientationId, Toast.LENGTH_SHORT).show();
-
-                saveInformations( exerciseRadioId, mapTypeId, speedUnitId, mapOrientationId);
+                 saveInformations( exerciseRadioId, mapTypeId, speedUnitId, mapOrientationId);
 
             }
         });
