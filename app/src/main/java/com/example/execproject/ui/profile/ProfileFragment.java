@@ -132,7 +132,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                    return false;
                }
 
-               if(userWeight.substring(userWeight.indexOf(".")).length() > 3){
+               if(!userWeight.isEmpty() && userWeight.substring(userWeight.indexOf(".")).length() > 3){
                    Toast.makeText(getContext(), R.string.twoDecimal, Toast.LENGTH_SHORT).show();
                    return false;
                }

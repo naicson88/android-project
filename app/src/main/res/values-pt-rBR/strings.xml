@@ -7,10 +7,10 @@
     <string name="about">Sobre</string>
     <string name="hist">Histórico</string>
     <string name="exec_monitoring">Monitoramento de Exercícios</string>
-    <string name="gender">Sexo</string>
+    <string name="gender">Genero</string>
     <string name="male">Masculino</string>
     <string name="female">Feminino</string>
-    <string name="profile_title">Nome Completo</string>
+    <string name="profile_title">Perfil</string>
     <string name="user_name">Nome de usuário</string>
     <string name="weight">Peso</string>
     <string name="height">Altura</string>
@@ -21,7 +21,7 @@
     <string name="walking">Caminhar</string>
     <string name="running">Correr</string>
     <string name="biking">Pedalar</string>
-    <string name="speed_unit">Unidade de Medida em Km</string>
+    <string name="speed_unit">Unidade Vel.</string>
     <string name="menu_about">Sobre</string>
     <string name="upbody_desc">UpbBody é um sistema de monitoramento de exercícios físicos que tem como objetivo auxiliar os seus usuários monitorando as suas ações em diversas modalidades de exercícios.</string>
     <string name="devs">Desenvolvedores</string>
@@ -46,7 +46,7 @@
     <string name="benefit_heart">Praticar exercícios físicos regularmente ajuda a prevenir ou administrar muitos problemas de saúde e problemas com peso.</string>
     <string name="benefit_mood">Atividades físicas estimulam diversas químicas cerebrais que podem fazê-lo se sentir mais feliz, mais relaxado e menos ansioso.</string>
     <string name="benefit_sleep">Praticar atividade física regularmente pode ajudá-lo a dormir mais rápido, melhor e mais profundamente.</string>
-    <string name="map_orientation">Mapa de Orientação</string>
+    <string name="map_orientation">Orientação Mapa</string>
     <string name="vetorial">Vetorial</string>
     <string name="satellite">Satélite</string>
     <string name="map_type">Tipo de Mapa</string>

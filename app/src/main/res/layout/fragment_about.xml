@@ -61,8 +61,8 @@
 
     <TextView
         android:id="@+id/textViewCopyright"
-        android:layout_width="295dp"
-        android:layout_height="38dp"
+        android:layout_width="293dp"
+        android:layout_height="58dp"
         android:text="@string/copyright"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"

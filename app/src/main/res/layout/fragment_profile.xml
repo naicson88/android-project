@@ -55,14 +55,14 @@
             android:layout_height="33dp"
             android:checked="true"
             android:text="@string/male"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/radioButtonFemale"
             android:layout_width="103dp"
             android:layout_height="33dp"
             android:text="@string/female"
-            android:textSize="16sp" />
+            android:textSize="15sp" />
 
     </RadioGroup>
 
