@@ -12,13 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="89dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-28dp">
+
 
         <TextView
             android:id="@+id/walcomeHome"
-            android:layout_width="149dp"
-            android:layout_height="35dp"
+            android:layout_width="122dp"
+            android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -29,30 +30,27 @@
             app:fontWeight="700"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.084"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.011" />
+            app:layout_constraintVertical_bias="0.024" />
 
         <TextView
             android:id="@+id/exerciseCoverage"
-            android:layout_width="290dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="250dp"
+            android:layout_height="20dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:text="@string/exec_coverage"
             android:textAlignment="center"
             android:textColor="#BEBEBE"
-            android:textSize="17sp"
+            android:textSize="15sp"
             app:fontWeight="700"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintHorizontal_bias="0.106"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.112" />
-
+            app:layout_constraintVertical_bias="0.122" />
 
         <TextView
             android:id="@+id/textView2"
@@ -174,19 +172,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.537" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/sliderHome"
+            android:layout_width="380dp"
+            android:layout_height="194dp"
+            app:iss_auto_cycle="true"
+            app:iss_period="3000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.483"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.234" />
 
-    <com.denzcoskun.imageslider.ImageSlider
-        android:id="@+id/sliderHome"
-        android:layout_width="380dp"
-        android:layout_height="194dp"
-        app:iss_auto_cycle="true"
-        app:iss_period="3000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.234" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,4 +51,5 @@
     <string name="satellite">Satélite</string>
     <string name="map_type">Tipo de Mapa</string>
     <string name="errorBirthDate">Por favor insira sua data de nascimento</string>
+    <string name="twoDecimal">Peso invalido, preencha com duas casas decimais.</string>
 </resources>
