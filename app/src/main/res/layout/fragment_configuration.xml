@@ -234,14 +234,3 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
-
-<!--<fragment-->
-<!--android:id="@+id/mapView"-->
-<!--android:name="com.google.android.gms.maps.SupportMapFragment"-->
-<!--android:layout_width="351dp"-->
-<!--android:layout_height="190dp"-->
-<!--app:layout_constraintBottom_toBottomOf="parent"-->
-<!--app:layout_constraintEnd_toEndOf="parent"-->
-<!--app:layout_constraintStart_toStartOf="parent"-->
-<!--app:layout_constraintTop_toTopOf="parent"-->
-<!--app:layout_constraintVertical_bias="0.672" />-->

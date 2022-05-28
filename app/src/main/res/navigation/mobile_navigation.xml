@@ -32,4 +32,9 @@
         android:name="com.example.execproject.ui.configuration.ConfigurationFragment"
         android:label="Configuration"
         tools:layout="@layout/fragment_configuration" />
+    <fragment
+        android:id="@+id/nav_exec_monit"
+        android:name="com.example.execproject.ui.exec_monitoring.ExerciseMonitoringFragment"
+        android:label="@string/exec_monitoring"
+        tools:layout="@layout/fragment_excercise_monitoring" />
 </navigation>
