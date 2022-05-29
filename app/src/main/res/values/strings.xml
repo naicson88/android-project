@@ -24,7 +24,7 @@
     <string name="config_title">Configuration</string>
     <string name="exec_type">Exercise Type</string>
     <string name="walking">Walking</string>
-    <string name="running">Runnng</string>
+    <string name="running">Running</string>
     <string name="biking">Biking</string>
     <string name="speed_unit">Speed Unit</string>
     <string name="menu_about">About</string>
@@ -70,5 +70,8 @@
     <string name="errorBirthDate">Please insert your Birthdate</string>
     <string name="home">Home</string>
     <string name="twoDecimal">Invalid weight, only 2 decimals allowed</string>
+    <string name="distance">Distance</string>
+    <string name="time">Time</string>
+    <string name="speed">Speed</string>
 
 </resources>

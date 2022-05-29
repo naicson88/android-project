@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCallback {
 
@@ -50,6 +57,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     private int distanciaAcumulada;
     long tempoInicial , tempoAtual, tempoTranscorrido;
 
+    String speedUnit, mapOrientation, mapType, exerciseType;
+
     public static ExerciseMonitoringFragment newInstance() {
         ExerciseMonitoringFragment fragment = new ExerciseMonitoringFragment();
         return fragment;
@@ -69,6 +78,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         buscaLocalizacaoAtual();
         tempoInicial = System.currentTimeMillis();
+
+        readInformationsSaved();
         return root;
     }
 
@@ -148,17 +159,73 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         System.out.println("Tempo total (em segundos): " + tempoTranscorrido/1000);
 
         LatLng userPosition = new LatLng( location.getLatitude(), location.getLongitude());
-        if(gMap != null){
+
+        if(gMap != null) {
             if(mapMarker == null){
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(userPosition);
-                gMap.addMarker(markerOptions);
+                mapMarker = gMap.addMarker(new MarkerOptions().position(userPosition));
+//                MarkerOptions markerOptions = new MarkerOptions();
+//                markerOptions.position(userPosition);
+//                gMap.addMarker(markerOptions);
 
             } else {
                 mapMarker.setPosition(userPosition);
             }
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 18f));
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
 
         }
+    }
+
+    //Buscar informações de configuração salvas
+
+    public void readInformationsSaved(){
+
+        try{
+
+            FileInputStream fileInputStream = getActivity().openFileInput("Monitoring File.txt");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+                setFieldsInformationsSaved(line);
+                Toast.makeText(getContext(), line, Toast.LENGTH_LONG).show();
+            }
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void setFieldsInformationsSaved(String infos) {
+        String[]  informations = infos.split(";");
+
+        exerciseType = informations[0];
+        speedUnit = informations[1];
+        mapOrientation = informations[2];
+        mapType = informations[3];
+
+        binding.speedUnit.setText(speedUnit);
+        binding.styleExec.setText(exerciseType);
+
+        if("walking".equalsIgnoreCase(exerciseType)){
+            binding.imageView4.setBackgroundResource(R.color.red);
+            binding.imageView4.setImageResource(R.drawable.ic_walking);
+
+        } else if ("running".equalsIgnoreCase(exerciseType)){
+            binding.imageView4.setBackgroundResource(R.color.green);
+            binding.imageView4.setImageResource(R.drawable.ic_running);
+        }else {
+            binding.imageView4.setBackgroundResource(R.color.blue);
+            binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
+        }
+
+
     }
 }

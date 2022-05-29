@@ -155,7 +155,7 @@ public class ConfigurationFragment extends Fragment {
             fileOutputStream.write(attributesToBeSaved.getBytes());
 
             fileOutputStream.close();
-
+            readInformationsSaved();
             Toast.makeText(getContext(), R.string.savedMessage, Toast.LENGTH_SHORT).show();
 
         }catch(FileNotFoundException e){
@@ -194,17 +194,44 @@ public class ConfigurationFragment extends Fragment {
 
         if (informations == null || informations.length() == 0 || informations.isEmpty())
             return;
-
         String[] configInformations = informations.split(";");
+
+       String configTextInformations = "";
 
         radioButtonExercises = (RadioButton) viewAux.findViewById(Integer.parseInt(configInformations[0]));
         radioButtonExercises.setChecked(true);
+        configTextInformations += radioButtonExercises.getText().toString() + ";";
 
         binding.speedUnitSpinner.setSelection(Integer.parseInt(configInformations[1]));
+        configTextInformations +=  binding.speedUnitSpinner.getSelectedItem().toString() + ";";
+
         binding.mapOrientationSpinner.setSelection(Integer.parseInt(configInformations[2]));
+        configTextInformations +=    binding.mapOrientationSpinner.getSelectedItem().toString() + ";";
 
         radioButtonMapType = (RadioButton) viewAux.findViewById(Integer.parseInt(configInformations[3]));
         radioButtonMapType.setChecked(true);
+        configTextInformations += radioButtonMapType.getText().toString() + ";";
+
+        saveTextInformationFromConfig(configTextInformations);
+        //Toast.makeText(getContext(), configTextInformations, Toast.LENGTH_LONG).show();
 
     }
+
+    private void saveTextInformationFromConfig(String informations) {
+
+        try{
+            if(informations != null && !informations.isEmpty()){
+                FileOutputStream fileOutputStream = getActivity().openFileOutput("Monitoring File.txt", Context.MODE_PRIVATE);
+                fileOutputStream.write(informations.getBytes());
+
+                fileOutputStream.close();
+            }
+
+        }  catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
 }
