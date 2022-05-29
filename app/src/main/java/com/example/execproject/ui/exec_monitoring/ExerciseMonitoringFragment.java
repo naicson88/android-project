@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +35,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.time.Duration;
 
 
 public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCallback {
@@ -54,8 +56,11 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     private Marker mapMarker;
     private Location localizacaoAtual, ultimaLocalizacao;
     private boolean firstFix = true;
-    private int distanciaAcumulada;
+    private boolean cronometro = false;
+    private double distanciaAcumulada, distanciaAcumuladaKm;
     long tempoInicial , tempoAtual, tempoTranscorrido;
+
+    Thread cron;
 
     String speedUnit, mapOrientation, mapType, exerciseType;
 
@@ -90,6 +95,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         LatLng sydney = new LatLng(-34, 151);
         gMap.addMarker(new MarkerOptions().position(sydney).title("Market in Sydney"));
         gMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
     }
 
     private void buscaLocalizacaoAtual() {
@@ -143,8 +149,20 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         tempoAtual = System.currentTimeMillis();
         tempoTranscorrido = tempoAtual - tempoInicial;
 
-        if(firstFix){
+        if(cronometro && localizacaoAtual != location){
 
+            long input = tempoTranscorrido / 1000;
+            long horas = input / 3600;
+            long minutos = (input - (horas * 3600)) / 60;
+            long segundos = input - (horas * 3600) - (minutos * 60);
+
+            if(minutos < 10 && segundos < 10)
+                binding.inputTime.setText(horas+":0"+minutos+":0"+segundos);
+            if(minutos < 10 && segundos > 10)
+                binding.inputTime.setText(horas+":0"+minutos+":"+segundos);
+        }
+
+        if(firstFix){
             firstFix = false;
             localizacaoAtual = ultimaLocalizacao = location;
             distanciaAcumulada = 0;
@@ -154,19 +172,16 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             localizacaoAtual = location;
             distanciaAcumulada += localizacaoAtual.distanceTo(ultimaLocalizacao);
         }
+//
+//        System.out.println("Distancia percorrida (metros): " + distanciaAcumulada);
+//        System.out.println("Tempo total (em segundos): " + tempoTranscorrido/1000);
 
-        System.out.println("Distancia percorrida (metros): " + distanciaAcumulada);
-        System.out.println("Tempo total (em segundos): " + tempoTranscorrido/1000);
-
+        setDistanciaTempoEVelocidade();
         LatLng userPosition = new LatLng( location.getLatitude(), location.getLongitude());
 
         if(gMap != null) {
             if(mapMarker == null){
                 mapMarker = gMap.addMarker(new MarkerOptions().position(userPosition));
-//                MarkerOptions markerOptions = new MarkerOptions();
-//                markerOptions.position(userPosition);
-//                gMap.addMarker(markerOptions);
-
             } else {
                 mapMarker.setPosition(userPosition);
             }
@@ -174,8 +189,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
         }
     }
-
-    //Buscar informações de configuração salvas
 
     public void readInformationsSaved(){
 
@@ -213,6 +226,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
         binding.speedUnit.setText(speedUnit);
         binding.styleExec.setText(exerciseType);
+        String unt = "km/h".equalsIgnoreCase(speedUnit) ? "(Km)" : "(m)";
+        binding.dist.setText(unt);
 
         if("walking".equalsIgnoreCase(exerciseType)){
             binding.imageView4.setBackgroundResource(R.color.red);
@@ -226,6 +241,24 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
         }
 
-
     }
+
+   private void setDistanciaTempoEVelocidade(){
+       DecimalFormat df = null;
+
+       if("m/s".equalsIgnoreCase(speedUnit) && distanciaAcumulada > 0){
+           cronometro = true;
+           df =  new DecimalFormat("0.00");
+           df.setRoundingMode(RoundingMode.HALF_UP);
+           binding.inputDistance.setText(df.format(distanciaAcumulada));
+
+       } else if(distanciaAcumuladaKm > 0){
+           distanciaAcumuladaKm = distanciaAcumulada / 1000;
+           df =  new DecimalFormat("0.000");
+           df.setRoundingMode(RoundingMode.HALF_UP);
+
+           binding.inputDistance.setText(df.format(distanciaAcumuladaKm));
+       }
+    }
+
 }
