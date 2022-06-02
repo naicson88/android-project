@@ -4,9 +4,14 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Chronometer;
+import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -60,14 +65,22 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     private double distanciaAcumulada, distanciaAcumuladaKm;
     long tempoInicial , tempoAtual, tempoTranscorrido;
 
-    Thread cron;
+    //Botoes
+    private Button startBtn, pauseBtn, saveBtn;
+    private boolean started = false;
+
+    //Cronometro
+    private long pauseOffset;
+    private Chronometer cron;
 
     String speedUnit, mapOrientation, mapType, exerciseType;
+    DecimalFormat df = null;
 
     public static ExerciseMonitoringFragment newInstance() {
         ExerciseMonitoringFragment fragment = new ExerciseMonitoringFragment();
         return fragment;
     }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +95,16 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
         buscaLocalizacaoAtual();
+
+        saveBtn = binding.saveBtn;
+        startBtn = binding.startBtn;
+        pauseBtn = binding.pauseBtn;
+        startBtn();
+        pauseBtn();
+        saveExecMonit();
         tempoInicial = System.currentTimeMillis();
+
+        cron = binding.chronometer;
 
         readInformationsSaved();
         return root;
@@ -114,6 +136,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                     super.onLocationResult(locationResult);
                     Location location = locationResult.getLastLocation();
                     atualizaPosicaoNoMapa(location);
+
                 }
             };
 
@@ -145,36 +168,17 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     }
 
     public void atualizaPosicaoNoMapa(Location location) {
-       // Toast.makeText( getContext(), "Coord = " + location.getLatitude() + " , " + location.getLongitude(), Toast.LENGTH_SHORT).show();
-        tempoAtual = System.currentTimeMillis();
-        tempoTranscorrido = tempoAtual - tempoInicial;
-
-        if(cronometro && localizacaoAtual != location){
-
-            long input = tempoTranscorrido / 1000;
-            long horas = input / 3600;
-            long minutos = (input - (horas * 3600)) / 60;
-            long segundos = input - (horas * 3600) - (minutos * 60);
-
-            if(minutos < 10 && segundos < 10)
-                binding.inputTime.setText(horas+":0"+minutos+":0"+segundos);
-            if(minutos < 10 && segundos > 10)
-                binding.inputTime.setText(horas+":0"+minutos+":"+segundos);
-        }
-
         if(firstFix){
             firstFix = false;
             localizacaoAtual = ultimaLocalizacao = location;
             distanciaAcumulada = 0;
 
         } else {
+
             ultimaLocalizacao = localizacaoAtual;
             localizacaoAtual = location;
             distanciaAcumulada += localizacaoAtual.distanceTo(ultimaLocalizacao);
         }
-//
-//        System.out.println("Distancia percorrida (metros): " + distanciaAcumulada);
-//        System.out.println("Tempo total (em segundos): " + tempoTranscorrido/1000);
 
         setDistanciaTempoEVelocidade();
         LatLng userPosition = new LatLng( location.getLatitude(), location.getLongitude());
@@ -185,6 +189,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             } else {
                 mapMarker.setPosition(userPosition);
             }
+
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
 
         }
@@ -244,15 +249,16 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     }
 
    private void setDistanciaTempoEVelocidade(){
-       DecimalFormat df = null;
 
-       if("m/s".equalsIgnoreCase(speedUnit) && distanciaAcumulada > 0){
+       if("m/s".equalsIgnoreCase(speedUnit) && distanciaAcumulada > 0 && started == true){
            cronometro = true;
            df =  new DecimalFormat("0.00");
            df.setRoundingMode(RoundingMode.HALF_UP);
            binding.inputDistance.setText(df.format(distanciaAcumulada));
+           double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cron.getBase()) /1000);
+           binding.inputSpeed.setText(df.format(time));
 
-       } else if(distanciaAcumuladaKm > 0){
+       } else if(distanciaAcumuladaKm > 0 && started == true){
            distanciaAcumuladaKm = distanciaAcumulada / 1000;
            df =  new DecimalFormat("0.000");
            df.setRoundingMode(RoundingMode.HALF_UP);
@@ -260,5 +266,56 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
            binding.inputDistance.setText(df.format(distanciaAcumuladaKm));
        }
     }
+
+    private void startBtn(){
+
+        startBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                cron.setBase(SystemClock.elapsedRealtime() - pauseOffset);
+                cron.start();
+                Toast.makeText(getContext(), "Started", Toast.LENGTH_SHORT).show();
+                pauseBtn.setEnabled(true);
+                saveBtn.setEnabled(false);
+                startBtn.setEnabled(false);
+                started = true;
+            }
+        });
+    }
+
+    private void pauseBtn(){
+
+        pauseBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                cron.stop();
+               pauseOffset = SystemClock.elapsedRealtime() - cron.getBase();
+                Toast.makeText(getContext(), "Paused", Toast.LENGTH_SHORT).show();
+                saveBtn.setEnabled(true);
+                startBtn.setEnabled(true);
+                started = false;
+            }
+        });
+    }
+
+    private void saveExecMonit(){
+
+        saveBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                binding.inputDistance.setText("");
+                distanciaAcumulada = 0;
+                distanciaAcumuladaKm = 0;
+                cron.getText();
+                binding.inputSpeed.setText("");
+                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                cron.setBase(SystemClock.elapsedRealtime());
+                pauseOffset = 0;
+                started = false;
+
+            }
+        });
+    }
+
 
 }

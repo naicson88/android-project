@@ -25,15 +25,59 @@
             app:layout_constraintVertical_bias="0.023" />
 
 
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="106dp"
+            android:layout_height="28dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.091"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.765">
+
+        </Chronometer>
+
         <Button
-            android:id="@+id/configSubmitButton"
+            android:id="@+id/pauseBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#B8860B"
+            android:onClick="pauseBtn"
+            android:enabled="false"
+            android:text="@string/pause"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976" />
+
+        <Button
+            android:id="@+id/startBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#1E90FF"
-            android:onClick="submitbuttonHandler"
-            android:text="@string/submit"
+            android:onClick="startBtn"
+            android:text="@string/start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.134"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976" />
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#006400"
+            android:onClick="saveExecMonit"
+            android:enabled="false"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.881"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.976" />
@@ -64,7 +108,7 @@
             app:layout_constraintVertical_bias="0.662" />
 
         <EditText
-            android:id="@+id/inputWeight"
+            android:id="@+id/inputSpeed"
             android:layout_width="118dp"
             android:layout_height="44dp"
             android:ems="10"
@@ -84,7 +128,6 @@
             android:layout_width="154dp"
             android:layout_height="47dp"
             android:ems="10"
-            android:hint=" 0:00:00"
             android:inputType="numberDecimal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
