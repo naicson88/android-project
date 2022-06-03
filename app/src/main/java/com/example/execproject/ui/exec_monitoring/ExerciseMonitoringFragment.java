@@ -66,7 +66,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     long tempoInicial , tempoAtual, tempoTranscorrido;
 
     //Botoes
-    private Button startBtn, pauseBtn, saveBtn;
+    private Button startBtn, pauseBtn, saveBtn, cleanBtn;
     private boolean started = false;
 
     //Cronometro
@@ -99,6 +99,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         saveBtn = binding.saveBtn;
         startBtn = binding.startBtn;
         pauseBtn = binding.pauseBtn;
+        cleanBtn = binding.cleanBtn;
+        cleanBtn();
         startBtn();
         pauseBtn();
         saveExecMonit();
@@ -156,14 +158,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             }
         } else {
             Toast.makeText( getContext(), "Sem permissão para mostrar atualização de localização", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public  void onDestroy() {
-        super.onDestroy();
-        if(fusedLocation != null){
-            fusedLocation.removeLocationUpdates(locationCallback);
         }
     }
 
@@ -258,12 +252,17 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
            double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cron.getBase()) /1000);
            binding.inputSpeed.setText(df.format(time));
 
-       } else if(distanciaAcumuladaKm > 0 && started == true){
+       } else if("km/h".equalsIgnoreCase(speedUnit) && distanciaAcumulada> 0 && started == true){
+
            distanciaAcumuladaKm = distanciaAcumulada / 1000;
            df =  new DecimalFormat("0.000");
+           DecimalFormat sp =  new DecimalFormat("0.0");
            df.setRoundingMode(RoundingMode.HALF_UP);
-
+           double time = distanciaAcumulada / ((SystemClock.elapsedRealtime() - cron.getBase()) /1000);
+           time = time * 3.6;
+           binding.inputSpeed.setText(sp.format(time));
            binding.inputDistance.setText(df.format(distanciaAcumuladaKm));
+
        }
     }
 
@@ -278,7 +277,9 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 pauseBtn.setEnabled(true);
                 saveBtn.setEnabled(false);
                 startBtn.setEnabled(false);
+                cleanBtn.setEnabled(false);
                 started = true;
+
             }
         });
     }
@@ -293,6 +294,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 Toast.makeText(getContext(), "Paused", Toast.LENGTH_SHORT).show();
                 saveBtn.setEnabled(true);
                 startBtn.setEnabled(true);
+                cleanBtn.setEnabled(true);
                 started = false;
             }
         });
@@ -312,10 +314,37 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 cron.setBase(SystemClock.elapsedRealtime());
                 pauseOffset = 0;
                 started = false;
+                cleanBtn.setEnabled(false);
 
             }
         });
     }
 
+    private void cleanBtn(){
+
+        cleanBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                binding.inputDistance.setText("");
+                distanciaAcumulada = 0;
+                distanciaAcumuladaKm = 0;
+                cron.getText();
+                binding.inputSpeed.setText("");
+                cron.setBase(SystemClock.elapsedRealtime());
+                pauseOffset = 0;
+                started = false;
+
+            }
+        });
+    }
+
+    @Override
+    public  void onDestroy() {
+        super.onDestroy();
+        if(fusedLocation != null){
+            fusedLocation.removeLocationUpdates(locationCallback);
+
+        }
+    }
 
 }

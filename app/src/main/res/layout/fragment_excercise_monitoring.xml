@@ -180,6 +180,29 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.669" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cleanBtn"
+            android:enabled="false"
+            android:layout_width="53dp"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:insetLeft="0dp"
+            android:insetTop="0dp"
+            android:insetRight="0dp"
+            android:insetBottom="0dp"
+            android:onClick="cleanBtn"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_clean"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="35dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.872"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85" />
+
         <TextView
             android:id="@+id/styleExec"
             android:layout_width="90dp"
