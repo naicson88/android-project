@@ -10,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.execproject.LatLgnDTO;
 import com.example.execproject.R;
 import com.example.execproject.databinding.FragmentExcerciseHistoricBinding;
 import com.example.execproject.databinding.FragmentExcerciseMonitoringBinding;
 import com.example.execproject.ui.configuration.ConfigurationViewModel;
 import com.example.execproject.ui.exec_monitoring.ExerciseMonitoringFragment;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,7 +29,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCallback {
@@ -100,6 +106,32 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
         distance = (String) dadosMap.get("distancia");
         totalTime = (String) dadosMap.get("tempo");
         String date = (String) dadosMap.get("date");
+        List<LatLgnDTO> dto = (List<LatLgnDTO>) dadosMap.get("coordenadas");
+
+        System.out.println("LATLONG >>>>>>> " + dto.toString());
+
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        List<LatLgnDTO> latlgnDto = new ArrayList<>();
+//
+//        try {
+//            System.out.println("Entrou no Try");
+//
+//            latlgnDto = Arrays.asList(mapper.readValue(dto.toString(), LatLgnDTO[].class));
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//      System.out.println("LATLONG >>>>>>> " + latlgnDto);
+
+//        Map<String, Object> map = (Map<String, Object>) dadosMap.get("coordenadas");
+//        for (Map.Entry<String, Object> entry : map.entrySet()) {
+//            if (entry.getKey().equals("coordenadas")) {
+//                System.out.println("LATLONG >>>>>>> " + map);
+//            }
+//        }
+
+
+
 
         String distanceType = speedUnit.equalsIgnoreCase("km/h") ? " km" : " m";
 

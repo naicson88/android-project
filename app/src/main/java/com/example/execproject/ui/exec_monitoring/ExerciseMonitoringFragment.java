@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.execproject.LatLgnDTO;
 import com.example.execproject.R;
 import com.example.execproject.databinding.FragmentExcerciseMonitoringBinding;
 import com.example.execproject.ui.configuration.ConfigurationViewModel;
@@ -92,7 +93,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
     String speedUnit, mapOrientation, mapType, exerciseType;
     DecimalFormat df = null;
-    List<Map<String, String>> latLgn = new ArrayList<>();
+    List<Map<String, List<LatLgnDTO>>> latLgn = new ArrayList<>();
+    List<LatLgnDTO> listLatLgn = new ArrayList<>();
     int count = 0;
 
     //Firebase
@@ -203,10 +205,14 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
 
         if(count == 3){
-            Map<String, String> latlong = new HashMap<>();
-            latlong.put("lat", String.valueOf(location.getLatitude()));
-            latlong.put("lon", String.valueOf(location.getLongitude()));
-            latLgn.add(latlong);
+//            Map<String, String> latlong = new HashMap<>();
+//            latlong.put("lat", String.valueOf(location.getLatitude()));
+//            latlong.put("lon", String.valueOf(location.getLongitude()));
+//            latLgn.add(latlong);
+            LatLgnDTO dto = new LatLgnDTO();
+            dto.setLat(location.getLatitude());
+            dto.setLon(location.getLongitude());
+            listLatLgn.add(dto);
             count = 0;
 
         } else {count++;}
@@ -350,7 +356,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             @Override
             public void onClick(View v) {
 
-                Map<String, String> exercicio = new HashMap<>();
+                Map<String, Object> exercicio = new HashMap<>();
                 exercicio.put("distancia", binding.inputDistance.getText().toString());
                 exercicio.put("tempo", cron.getText().toString());
                 exercicio.put("velocidade", binding.inputSpeed.getText().toString());
@@ -359,7 +365,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 exercicio.put("orientacaoMapa", mapOrientation);
                 exercicio.put("unidadeVelocidade", speedUnit);
                 exercicio.put("date", curDate());
-                exercicio.put("coordenadas", latLgn.toString());
+                exercicio.put("coordenadas", listLatLgn);
 
                 firestore.collection("exec_monit").add(exercicio).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
