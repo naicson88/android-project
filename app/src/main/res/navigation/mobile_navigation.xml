@@ -37,4 +37,9 @@
         android:name="com.example.execproject.ui.exec_monitoring.ExerciseMonitoringFragment"
         android:label="@string/exec_monitoring"
         tools:layout="@layout/fragment_excercise_monitoring" />
+    <fragment
+        android:id="@+id/nav_exec_hist"
+        android:name="com.example.execproject.ui.exec_historic.ExerciseHistoricFragment"
+        android:label="@string/exec_historic"
+        tools:layout="@layout/fragment_excercise_historic" />
 </navigation>

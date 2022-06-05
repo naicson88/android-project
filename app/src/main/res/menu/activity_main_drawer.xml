@@ -30,7 +30,7 @@
             android:icon="@drawable/ic_menu_monitoring"
             android:title="@string/exec_monitoring" />
         <item
-            android:id="@+id/menu_history"
+            android:id="@+id/nav_exec_hist"
             android:icon="@drawable/ic_menu_history"
             android:title="@string/hist" />
     </group>

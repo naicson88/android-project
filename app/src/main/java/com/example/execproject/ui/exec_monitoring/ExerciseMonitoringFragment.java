@@ -34,6 +34,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -42,7 +51,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCallback {
@@ -75,6 +92,11 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
     String speedUnit, mapOrientation, mapType, exerciseType;
     DecimalFormat df = null;
+    List<Map<String, String>> latLgn = new ArrayList<>();
+    int count = 0;
+
+    //Firebase
+    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
     public static ExerciseMonitoringFragment newInstance() {
         ExerciseMonitoringFragment fragment = new ExerciseMonitoringFragment();
@@ -94,7 +116,10 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
+
+        readInformationsSaved();
         buscaLocalizacaoAtual();
+
 
         saveBtn = binding.saveBtn;
         startBtn = binding.startBtn;
@@ -108,7 +133,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
         cron = binding.chronometer;
 
-        readInformationsSaved();
         return root;
     }
 
@@ -177,6 +201,17 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         setDistanciaTempoEVelocidade();
         LatLng userPosition = new LatLng( location.getLatitude(), location.getLongitude());
 
+
+        if(count == 3){
+            Map<String, String> latlong = new HashMap<>();
+            latlong.put("lat", String.valueOf(location.getLatitude()));
+            latlong.put("lon", String.valueOf(location.getLongitude()));
+            latLgn.add(latlong);
+            count = 0;
+
+        } else {count++;}
+
+
         if(gMap != null) {
             if(mapMarker == null){
                 mapMarker = gMap.addMarker(new MarkerOptions().position(userPosition));
@@ -228,6 +263,11 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         String unt = "km/h".equalsIgnoreCase(speedUnit) ? "(Km)" : "(m)";
         binding.dist.setText(unt);
 
+        if("satellite".equalsIgnoreCase(mapType))
+            gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        else
+            gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
         if("walking".equalsIgnoreCase(exerciseType)){
             binding.imageView4.setBackgroundResource(R.color.red);
             binding.imageView4.setImageResource(R.drawable.ic_walking);
@@ -235,7 +275,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         } else if ("running".equalsIgnoreCase(exerciseType)){
             binding.imageView4.setBackgroundResource(R.color.green);
             binding.imageView4.setImageResource(R.drawable.ic_running);
-        }else {
+        } else {
             binding.imageView4.setBackgroundResource(R.color.blue);
             binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
         }
@@ -262,6 +302,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
            time = time * 3.6;
            binding.inputSpeed.setText(sp.format(time));
            binding.inputDistance.setText(df.format(distanciaAcumuladaKm));
+
+
 
        }
     }
@@ -302,15 +344,43 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
     private void saveExecMonit(){
 
-        saveBtn.setOnClickListener(new View.OnClickListener(){
+
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
+
+                Map<String, String> exercicio = new HashMap<>();
+                exercicio.put("distancia", binding.inputDistance.getText().toString());
+                exercicio.put("tempo", cron.getText().toString());
+                exercicio.put("velocidade", binding.inputSpeed.getText().toString());
+                exercicio.put("tipoExercicio", exerciseType);
+                exercicio.put("tipoMapa", mapType);
+                exercicio.put("orientacaoMapa", mapOrientation);
+                exercicio.put("unidadeVelocidade", speedUnit);
+                exercicio.put("date", curDate());
+                exercicio.put("coordenadas", latLgn.toString());
+
+                firestore.collection("exec_monit").add(exercicio).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Toast.makeText(getContext(), documentReference.getId(), Toast.LENGTH_LONG).show();
+                       String manter = documentReference.getId();
+                        deletaTodosAntesDeSalvar(manter);
+                    }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getContext(), "Erro ao salvar", Toast.LENGTH_LONG).show();
+                            System.out.println("Erro ao salvar: " + e.getMessage());
+                        }
+                    });
+
                 binding.inputDistance.setText("");
                 distanciaAcumulada = 0;
                 distanciaAcumuladaKm = 0;
                 cron.getText();
                 binding.inputSpeed.setText("");
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
                 cron.setBase(SystemClock.elapsedRealtime());
                 pauseOffset = 0;
                 started = false;
@@ -320,31 +390,73 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         });
     }
 
-    private void cleanBtn(){
+        private void deletaTodosAntesDeSalvar(String manter){
 
-        cleanBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                binding.inputDistance.setText("");
-                distanciaAcumulada = 0;
-                distanciaAcumuladaKm = 0;
-                cron.getText();
-                binding.inputSpeed.setText("");
-                cron.setBase(SystemClock.elapsedRealtime());
-                pauseOffset = 0;
-                started = false;
+            firestore.collection("exec_monit")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
 
-            }
-        });
-    }
+                                    if(!document.getId().equalsIgnoreCase(manter)){
+                                        firestore.collection("exec_monit").document(document.getId())
+                                                .delete()
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        System.out.println("Excluido");
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        System.out.println("Não excluido");
+                                                    }
+                                                });
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(getContext(), "Erro ao salvar", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
-    @Override
-    public  void onDestroy() {
-        super.onDestroy();
-        if(fusedLocation != null){
-            fusedLocation.removeLocationUpdates(locationCallback);
 
         }
-    }
+        private void cleanBtn(){
 
+            cleanBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    binding.inputDistance.setText("");
+                    distanciaAcumulada = 0;
+                    distanciaAcumuladaKm = 0;
+                    cron.getText();
+                    binding.inputSpeed.setText("");
+                    cron.setBase(SystemClock.elapsedRealtime());
+                    pauseOffset = 0;
+                    started = false;
+
+                }
+            });
+        }
+
+        @Override
+        public  void onDestroy() {
+            super.onDestroy();
+            if(fusedLocation != null){
+                fusedLocation.removeLocationUpdates(locationCallback);
+
+            }
+        }
+
+        private String curDate() {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = new Date();
+            String strDate = formatter.format(date);
+
+            return strDate;
+        }
 }
