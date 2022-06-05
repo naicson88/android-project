@@ -79,5 +79,6 @@
     <string name="exec_hist">Historic</string>
     <string name="exec_historic">Historic</string>
     <string name="finished">Finished</string>
+    <string name="calories">Calories</string>
 
 </resources>

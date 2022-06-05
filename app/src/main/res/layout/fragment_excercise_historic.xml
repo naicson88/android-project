@@ -71,7 +71,7 @@
             android:id="@+id/termino"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/finished"
+            android:text="@string/calories"
             android:textColor="#6959CD"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"

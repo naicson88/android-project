@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,6 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -43,7 +42,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.WriteBatch;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -52,10 +50,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,7 +76,8 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     private boolean firstFix = true;
     private boolean cronometro = false;
     private double distanciaAcumulada, distanciaAcumuladaKm;
-    long tempoInicial , tempoAtual, tempoTranscorrido;
+    long tempoInicial;
+    private UiSettings mUiSettings;
 
     //Botoes
     private Button startBtn, pauseBtn, saveBtn, cleanBtn;
@@ -99,6 +95,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
     //Firebase
     FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
 
     public static ExerciseMonitoringFragment newInstance() {
         ExerciseMonitoringFragment fragment = new ExerciseMonitoringFragment();
@@ -120,6 +117,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         mapFragment.getMapAsync(this);
 
         readInformationsSaved();
+        readInformationsSavedProfile();
         buscaLocalizacaoAtual();
 
 
@@ -131,6 +129,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         startBtn();
         pauseBtn();
         saveExecMonit();
+
         tempoInicial = System.currentTimeMillis();
 
         cron = binding.chronometer;
@@ -141,10 +140,14 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         gMap = googleMap;
+        mUiSettings = gMap.getUiSettings();
 
-        LatLng sydney = new LatLng(-34, 151);
-        gMap.addMarker(new MarkerOptions().position(sydney).title("Market in Sydney"));
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        if("satellite".equalsIgnoreCase(mapType))
+            gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        else
+            gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+
+        mUiSettings.setCompassEnabled(false);
 
     }
 
@@ -205,10 +208,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
 
         if(count == 3){
-//            Map<String, String> latlong = new HashMap<>();
-//            latlong.put("lat", String.valueOf(location.getLatitude()));
-//            latlong.put("lon", String.valueOf(location.getLongitude()));
-//            latLgn.add(latlong);
             LatLgnDTO dto = new LatLgnDTO();
             dto.setLat(location.getLatitude());
             dto.setLon(location.getLongitude());
@@ -256,6 +255,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         }
     }
 
+
     private void setFieldsInformationsSaved(String infos) {
         String[]  informations = infos.split(";");
 
@@ -268,11 +268,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         binding.styleExec.setText(exerciseType);
         String unt = "km/h".equalsIgnoreCase(speedUnit) ? "(Km)" : "(m)";
         binding.dist.setText(unt);
-
-        if("satellite".equalsIgnoreCase(mapType))
-            gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        else
-            gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         if("walking".equalsIgnoreCase(exerciseType)){
             binding.imageView4.setBackgroundResource(R.color.red);
@@ -350,8 +345,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
     private void saveExecMonit(){
 
-
-
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,7 +357,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 exercicio.put("tipoMapa", mapType);
                 exercicio.put("orientacaoMapa", mapOrientation);
                 exercicio.put("unidadeVelocidade", speedUnit);
-                exercicio.put("date", curDate());
+                exercicio.put("calorias",  readInformationsSavedProfile());
                 exercicio.put("coordenadas", listLatLgn);
 
                 firestore.collection("exec_monit").add(exercicio).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -381,6 +374,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                             System.out.println("Erro ao salvar: " + e.getMessage());
                         }
                     });
+
 
                 binding.inputDistance.setText("");
                 distanciaAcumulada = 0;
@@ -465,4 +459,83 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
 
             return strDate;
         }
+
+        private Double calculaGastoCalorias(String infos){
+            String[]  informations = infos.split(";");
+
+            String peso = informations[2];
+
+            double vel = 0;
+
+            if("m/s".equalsIgnoreCase(speedUnit)){
+                double ms = Double.parseDouble(binding.inputSpeed.getText().toString());
+                vel = ms * 3.6;
+            } else {
+                vel = Double.parseDouble(binding.inputSpeed.getText().toString());
+            }
+            double cal = 0;
+
+            if("walking".equalsIgnoreCase(exerciseType)){
+               cal = 0.0140;
+            } else if ("running".equalsIgnoreCase(exerciseType)){
+                cal = 0.0175;
+            } else {
+                cal = 0.0199;
+            }
+
+            cal = (Double.parseDouble(peso) * vel) * cal;
+            cal = round(cal, 2);
+
+            String[] minSec = cron.getText().toString().split(":");
+            String min = minSec[0];
+            String sec = minSec[1];
+            double totalCal = 0;
+
+            if(!"00".equals(min)){
+                totalCal = cal * Double.parseDouble(min);
+            } else if(!"00".equals(sec)){
+                totalCal += cal * (Double.parseDouble(sec) / 60);
+            }
+
+            return round(totalCal, 2);
+
+        }
+
+    public Double readInformationsSavedProfile() {
+        Double totalCal = 0.0;
+
+        try{
+
+            FileInputStream fileInputStream = getActivity().openFileInput("Profile File.txt");
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+
+            BufferedReader bufferedReader = new BufferedReader((inputStreamReader));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line;
+            while((line = bufferedReader.readLine()) != null){
+                stringBuffer.append(line + "\n");
+               totalCal = calculaGastoCalorias(line);
+                Toast.makeText(getContext(), line, Toast.LENGTH_LONG).show();
+            }
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        } catch(IOException e){
+            e.printStackTrace();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return totalCal;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
 }

@@ -105,45 +105,17 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
         speed = (String) dadosMap.get("velocidade");
         distance = (String) dadosMap.get("distancia");
         totalTime = (String) dadosMap.get("tempo");
-        String date = (String) dadosMap.get("date");
+        Double calorias = (Double) dadosMap.get("calorias");
         List<LatLgnDTO> dto = (List<LatLgnDTO>) dadosMap.get("coordenadas");
 
         System.out.println("LATLONG >>>>>>> " + dto.toString());
-
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        List<LatLgnDTO> latlgnDto = new ArrayList<>();
-//
-//        try {
-//            System.out.println("Entrou no Try");
-//
-//            latlgnDto = Arrays.asList(mapper.readValue(dto.toString(), LatLgnDTO[].class));
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//      System.out.println("LATLONG >>>>>>> " + latlgnDto);
-
-//        Map<String, Object> map = (Map<String, Object>) dadosMap.get("coordenadas");
-//        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//            if (entry.getKey().equals("coordenadas")) {
-//                System.out.println("LATLONG >>>>>>> " + map);
-//            }
-//        }
-
-
-
 
         String distanceType = speedUnit.equalsIgnoreCase("km/h") ? " km" : " m";
 
         binding.inputDistance.setText(distance  + distanceType);
         binding.inputTime.setText(totalTime);
         binding.inputSpeed.setText(speed + " " + speedUnit);
-        binding.inputDate.setText(date);
-
-//        if("satellite".equalsIgnoreCase(mapType))
-//            gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-//        else
-//            gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+        binding.inputDate.setText(String.valueOf(calorias));
 
         if("walking".equalsIgnoreCase(exerciseType)){
             binding.imageView4.setBackgroundResource(R.color.red);
