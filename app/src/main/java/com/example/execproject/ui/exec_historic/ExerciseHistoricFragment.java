@@ -18,9 +18,13 @@ import com.example.execproject.ui.configuration.ConfigurationViewModel;
 import com.example.execproject.ui.exec_monitoring.ExerciseMonitoringFragment;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,7 +34,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +50,10 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
     private GoogleMap gMap;
     private SupportMapFragment mapFragment;
 
+    private  List<HashMap<String, Double>> tra;
+
     String speedUnit, speed, mapOrientation, mapType, exerciseType, distance, totalTime;
+
 
 
     //Firebase
@@ -66,11 +72,14 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.mapView);
         mapFragment.getMapAsync(this);
 
+
+
         return root;
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
+        gMap = googleMap;
 
         consultaUltimoRegistro();
     }
@@ -106,9 +115,16 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
         distance = (String) dadosMap.get("distancia");
         totalTime = (String) dadosMap.get("tempo");
         Double calorias = (Double) dadosMap.get("calorias");
-        List<LatLgnDTO> dto = (List<LatLgnDTO>) dadosMap.get("coordenadas");
+        tra = (List<HashMap<String, Double>>) dadosMap.get("coordenadas");
 
-        System.out.println("LATLONG >>>>>>> " + dto.toString());
+        List<LatLng> listLat = new ArrayList<>();
+
+       for(int i = 0; i < tra.size(); i++){
+           LatLng ll = new LatLng(tra.get(i).get("lat"), tra.get(i).get("lon"));
+           listLat.add(ll);
+       }
+
+        System.out.println("LATLONG >>>>>>> " + tra.toString());
 
         String distanceType = speedUnit.equalsIgnoreCase("km/h") ? " km" : " m";
 
@@ -131,6 +147,33 @@ public class ExerciseHistoricFragment extends Fragment implements OnMapReadyCall
             binding.imageView4.setImageResource(R.drawable.ic_baseline_directions_bike_24);
             binding.styleExec.setText(exerciseType);
         }
+
+        gMap.addPolyline(new PolylineOptions().addAll(listLat));
+
+        double latmin = tra.get(0).get("lat");
+        double latmax = tra.get(0).get("lat");
+        double lgnmin = tra.get(0).get("lon");
+        double lgnmax = tra.get(0).get("lon");
+
+        for(int i = 1; i < tra.size(); i++ ){
+            double lat, lon;
+            lat = tra.get(i).get("lat");
+            lon = tra.get(i).get("lon");
+
+            latmin = latmin < lat ? latmin : lat;
+            latmax = latmax > lat ? latmax : lat;
+            lgnmin = lgnmin < lon ? lgnmin : lat;
+            lgnmax = lgnmax > lon ? lgnmax : lat;
+        }
+
+        LatLng southWest = new LatLng(latmin, lgnmin);
+        LatLng northEast = new LatLng(latmax, lgnmax);
+
+        LatLngBounds bound = new LatLngBounds(southWest, northEast);
+
+       //gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bound, 50));
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(tra.get(0).get("lat"), tra.get(tra.size() - 1).get("lon")), 12));
+
 
     }
 }

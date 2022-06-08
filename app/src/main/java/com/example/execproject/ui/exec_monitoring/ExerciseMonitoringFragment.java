@@ -31,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -142,6 +143,11 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         gMap = googleMap;
         mUiSettings = gMap.getUiSettings();
 
+        UiSettings mapUI = gMap.getUiSettings();
+
+        mapUI.setCompassEnabled(false);
+        mapUI.setRotateGesturesEnabled(false);
+
         if("satellite".equalsIgnoreCase(mapType))
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         else
@@ -166,6 +172,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 public void onLocationResult(LocationResult locationResult){
                     super.onLocationResult(locationResult);
                     Location location = locationResult.getLastLocation();
+
                     atualizaPosicaoNoMapa(location);
 
                 }
@@ -207,7 +214,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         LatLng userPosition = new LatLng( location.getLatitude(), location.getLongitude());
 
 
-        if(count == 3){
+        if(count == 2){
             LatLgnDTO dto = new LatLgnDTO();
             dto.setLat(location.getLatitude());
             dto.setLon(location.getLongitude());
@@ -224,9 +231,16 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 mapMarker.setPosition(userPosition);
             }
 
-            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
+            if("north up".equalsIgnoreCase(mapOrientation) || "none".equalsIgnoreCase(mapOrientation)){
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
 
+            } else {
+                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+                gMap.moveCamera(CameraUpdateFactory.newCameraPosition(
+                        new CameraPosition(ll, 22, 25, 0)));
+            }
         }
+
     }
 
     public void readInformationsSaved(){
