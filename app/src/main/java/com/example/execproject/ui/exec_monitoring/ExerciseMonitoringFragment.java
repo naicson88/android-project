@@ -143,10 +143,6 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
         gMap = googleMap;
         mUiSettings = gMap.getUiSettings();
 
-        UiSettings mapUI = gMap.getUiSettings();
-
-        mapUI.setCompassEnabled(false);
-        mapUI.setRotateGesturesEnabled(false);
 
         if("satellite".equalsIgnoreCase(mapType))
             gMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
@@ -154,8 +150,24 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             gMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
         mUiSettings.setCompassEnabled(false);
+        UiSettings mapUI = gMap.getUiSettings();
 
+        if("north up".equalsIgnoreCase(mapOrientation) ){
+            mapUI.setCompassEnabled(false);
+            mapUI.setRotateGesturesEnabled(false);
+
+        } else if("none".equalsIgnoreCase(mapOrientation)){
+            mapUI.setCompassEnabled(true);
+            mapUI.setRotateGesturesEnabled(true);
+        }
+        else {
+            mapUI.setCompassEnabled(false);
+            mapUI.setRotateGesturesEnabled(false);
+
+        }
     }
+
+
 
     private void buscaLocalizacaoAtual() {
 
@@ -231,13 +243,19 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 mapMarker.setPosition(userPosition);
             }
 
-            if("north up".equalsIgnoreCase(mapOrientation) || "none".equalsIgnoreCase(mapOrientation)){
+            UiSettings mapUI = gMap.getUiSettings();
+
+            if("north up".equalsIgnoreCase(mapOrientation) ){
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
 
-            } else {
+            } else if("none".equalsIgnoreCase(mapOrientation)){
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 17f));
+
+            }
+            else {
                 LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 gMap.moveCamera(CameraUpdateFactory.newCameraPosition(
-                        new CameraPosition(ll, 22, 25, 0)));
+                        new CameraPosition(ll, 18, 25, location.getBearing())));
             }
         }
 
@@ -257,7 +275,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             while((line = bufferedReader.readLine()) != null){
                 stringBuffer.append(line + "\n");
                 setFieldsInformationsSaved(line);
-                Toast.makeText(getContext(), line, Toast.LENGTH_LONG).show();
+
             }
 
         }catch(FileNotFoundException e){
@@ -377,7 +395,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
                 firestore.collection("exec_monit").add(exercicio).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(getContext(), documentReference.getId(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "Saved", Toast.LENGTH_LONG).show();
                        String manter = documentReference.getId();
                         deletaTodosAntesDeSalvar(manter);
                     }
@@ -530,7 +548,7 @@ public class ExerciseMonitoringFragment extends Fragment implements OnMapReadyCa
             while((line = bufferedReader.readLine()) != null){
                 stringBuffer.append(line + "\n");
                totalCal = calculaGastoCalorias(line);
-                Toast.makeText(getContext(), line, Toast.LENGTH_LONG).show();
+
             }
 
         }catch(FileNotFoundException e){
