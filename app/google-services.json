@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "85625579669",
+    "project_id": "projetounifacs",
+    "storage_bucket": "projetounifacs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85625579669:android:ffe06ec3d833c32a14539c",
+        "android_client_info": {
+          "package_name": "com.example.execproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85625579669-ript8aatrrcmm38lslctr0id283lg6lq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSwXKAy51PkTp6c2hhWV9WphEOphx1m08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85625579669-ript8aatrrcmm38lslctr0id283lg6lq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -9,9 +9,12 @@ import android.view.Menu;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = binding.navView;
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_about, R.id.nav_slideshow, R.id.nav_profile, R.id.nav_config)
+                R.id.nav_home, R.id.nav_about, R.id.nav_slideshow, R.id.nav_profile, R.id.nav_config, R.id.nav_exec_monit, R.id.nav_exec_hist)
                 .setOpenableLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);

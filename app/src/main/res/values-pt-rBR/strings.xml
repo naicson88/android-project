@@ -52,4 +52,15 @@
     <string name="map_type">Tipo de Mapa</string>
     <string name="errorBirthDate">Por favor insira sua data de nascimento</string>
     <string name="twoDecimal">Peso invalido, preencha com duas casas decimais.</string>
+
+    <string name="distance">Distancia</string>
+    <string name="time">Tempo</string>
+    <string name="speed">Vel.</string>
+    <string name="start">Iniciar</string>
+    <string name="pause">Pausar</string>
+    <string name="save">Salvar</string>
+    <string name="exec_hist">Historico</string>
+    <string name="exec_historic">Historico</string>
+    <string name="finished">Término</string>
+    <string name="calories">Calorias</string>
 </resources>
